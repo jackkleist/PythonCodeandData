@@ -1,5 +1,5 @@
 import random
-
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib import ticker
@@ -62,19 +62,27 @@ class DataLooker:
 
 
 def main():
+    columns = 4
+    rows = 5
     odf_df = pd.read_csv("ODF_Test-sessions.csv")
-    sorted_df = odf_df.sort_values(by='Age')
-    task_df = sorted_df[['Task 1','Task 2','Task 3','Task 4']].copy
-    # m1 = task_df.mean(axis=0)
-    # st1 = task_df.std(axis=0)
-
+    odf_df_notnull = odf_df.fillna(20)
+    task_df = odf_df_notnull[['Task 1','Task 2','Task 3','Task 4']]
+    odf_arr = []
+    odf_arr.append(task_df['Task 1'].to_numpy(dtype=float))
+    odf_arr.append(task_df['Task 2'].to_numpy(dtype=float))
+    odf_arr.append(task_df['Task 3'].to_numpy(dtype=float))
+    odf_arr.append(task_df['Task 4'].to_numpy(dtype=float))
+    print(odf_arr[0])
+    m1 = task_df.mean(axis=0)
+    st1 = task_df.std(axis=0)
     fig, ax = plt.subplots()
-    bp = ax.boxplot(task_df, showmeans=True)
+    bp = ax.boxplot(odf_arr, showmeans=True)
 
-    # for i, line in enumerate(bp['medians']):
-    #     x, y = line.get_xydata()[1]
-    #     text = ' μ={:.2f}\n σ={:.2f}'.format(m1[i], st1[i])
-    #     ax.annotate(text, xy=(x, y))
+    for i, line in enumerate(bp['medians']):
+        x, y = line.get_xydata()[1]
+        text = ' μ={:.2f}\n σ={:.2f}'.format(m1[i], st1[i])
+        ax.annotate(text, xy=(x, y))
+
     plt.ylabel('Time (sec)')
     plt.title('Box plot of average time per task')
     plt.show()
