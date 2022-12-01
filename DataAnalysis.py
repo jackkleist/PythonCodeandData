@@ -1,9 +1,8 @@
-from matplotlib import pyplot as plt
-import numpy as np
-import csv
 import random
-from matplotlib import ticker
+
 import pandas as pd
+from matplotlib import pyplot as plt
+from matplotlib import ticker
 
 color_num = 5
 color = ["#" + ''.join([random.choice('0123456789ABCDEF') for i in range(6)])
@@ -64,11 +63,21 @@ class DataLooker:
 
 def main():
     odf_df = pd.read_csv("ODF_Test-sessions.csv")
-    print(odf_df)
-    #file_obj.close()
-    #row_storage.pop(0)
-    #plot_maker = DataLooker(row_storage)
-    #plot_maker.time_plot()
+    sorted_df = odf_df.sort_values(by='Age')
+    task_df = sorted_df[['Task 1','Task 2','Task 3','Task 4']].copy
+    # m1 = task_df.mean(axis=0)
+    # st1 = task_df.std(axis=0)
+
+    fig, ax = plt.subplots()
+    bp = ax.boxplot(task_df, showmeans=True)
+
+    # for i, line in enumerate(bp['medians']):
+    #     x, y = line.get_xydata()[1]
+    #     text = ' μ={:.2f}\n σ={:.2f}'.format(m1[i], st1[i])
+    #     ax.annotate(text, xy=(x, y))
+    plt.ylabel('Time (sec)')
+    plt.title('Box plot of average time per task')
+    plt.show()
 
 
 main()
