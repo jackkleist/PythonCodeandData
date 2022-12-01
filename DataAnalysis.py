@@ -63,15 +63,12 @@ class DataLooker:
 
 
 def main():
-    with open('ODF_Test-sessions.csv', "r", encoding="utf-8") as file_obj:
-        file_reader = csv.reader(file_obj)
-        row_storage = []
-        for row in file_reader:
-            row_storage.append(row)
-    file_obj.close()
-    row_storage.pop(0)
-    plot_maker = DataLooker(row_storage)
-    plot_maker.time_plot()
+    odf_df = pd.read_csv("ODF_Test-sessions.csv")
+    print(odf_df)
+    #file_obj.close()
+    #row_storage.pop(0)
+    #plot_maker = DataLooker(row_storage)
+    #plot_maker.time_plot()
 
 
 main()
